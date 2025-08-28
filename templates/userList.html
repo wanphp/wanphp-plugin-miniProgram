@@ -1,0 +1,82 @@
+<div id="mimiProgram-userList" class="card">
+  <div class="card-header">
+    <h3 class="card-title">{{title}}</h3>
+  </div>
+  <div class="card-body">
+    <table id="userData" class="table table-sm table-bordered table-hover"></table>
+  </div>
+  <!-- /.card-body -->
+  <div class="modal fade" id="modal-editUser" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">用户信息</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="userForm" action="" method="POST" class="needs-validation" novalidate>
+            <div class="input-group mb-3">
+              <label for="name" class="input-group-text">姓名</label>
+              <input id="name" name="name" type="text" class="form-control" required
+                     pattern="[\u4e00-\u9fa5]{2,8}$" placeholder="用户姓名"
+                     autocomplete="off">
+              <div class="invalid-feedback">姓名只能是中文名，最少两个字</div>
+            </div>
+            <div class="input-group mb-3">
+              <label for="tel" class="input-group-text">手机号</label>
+              <input id="tel" name="tel" type="text" class="form-control" required
+                     pattern="^(13[0-9]|14[579]|15[0-35-9]|16[6]|17[0-9]|18[0-9]|19[12589])\d{8}$"
+                     placeholder="用户手机号" autocomplete="off">
+              <div class="invalid-feedback">手机号格式不正确</div>
+            </div>
+            <div class="input-group">
+              <label for="status" class="input-group-text">状态</label>
+              <select id="status" name="status" class="form-select">
+                <option value="0">正常</option>
+                <option value="1">锁定</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+          <button type="submit" form="userForm" class="btn btn-primary">提交</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>
+<!-- /.card -->
+<script type="text/javascript">
+  loadScript('/plugins/miniprogram/js/userList.js', function () {
+    miniProgramUserDataTables = $('#mimiProgram-userList #userData').DataTable({
+      ajax: basePath + '/admin/mimiProgram/user',
+      rowId: 'id',
+      columns: [
+        {
+          title: '微信用户',
+          data: "avatarUrl", render: function (data, type, row) {
+            if (data) return '<img src="' + data + '" class="img-thumbnail" style="padding:0;" width="30" alt="头像">' + row.nickName;
+            else return row.openid;
+          }
+        },
+        {title: '姓名', data: "name"},
+        {title: '手机号', data: "tel"},
+        {
+          title: '首次使用时间', data: "ctime", render: function (data) {
+            if (data > 0) return moment.unix(data).format('YYYY-MM-DD HH:mm:ss');
+            else return '';
+          }
+        },
+        {
+          title: '操作',
+          width: 80,
+          data: "op",
+          defaultContent: '<button type="button" class="btn btn-tool edit" data-toggle="tooltip" title="修改用户信息"><i class="fas fa-edit"></i></button>'
+        }
+      ]
+    });
+  });
+</script>
