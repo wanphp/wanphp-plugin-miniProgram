@@ -1,6 +1,6 @@
 <?php
 
-namespace Wanphp\Plugins\MimiProgram\Application;
+namespace Wanphp\Plugins\MiniProgram;
 
 use Exception;
 use Psr\SimpleCache\CacheInterface;
@@ -51,12 +51,13 @@ class SessionIdObfuscatory
 
   /**
    * @param string $sid
+   * @param int $type 0授权码，1绑定码，2解绑码
    * @return string
    * @throws InvalidArgumentException
    * @throws RandomException
    * @throws Exception
    */
-  public function encode(string $sid): string
+  public function encode(string $sid, int $type = 0): string
   {
     if (strlen($sid) !== 26) {
       throw new Exception("session_id 必须是 26 位");
@@ -64,7 +65,14 @@ class SessionIdObfuscatory
 
     $rules = $this->getRules();
     $markers = array_keys($rules);
-    $marker = $markers[random_int(0, count($markers) - 1)];
+    // 小程序码分成3份，一份是授权登录，一份是与账号绑定，一份是解除绑定
+    $length = floor(count($markers) / 3);
+    $marker = match ($type) {
+      2 => $markers[random_int($length * 2, $length * 3 - 1)],
+      1 => $markers[random_int($length, $length * 2 - 1)],
+      default => $markers[random_int(0, $length - 1)],
+    };
+
     $positions = $rules[$marker];
 
     // 生成 5 个随机字符
@@ -89,17 +97,17 @@ class SessionIdObfuscatory
 
   /**
    * @param string $encoded
-   * @return string
+   * @return array
    * @throws InvalidArgumentException
    * @throws RandomException
    */
-  public function decode(string $encoded): string
+  public function decode(string $encoded): array
   {
     $marker = strtolower($encoded[0]); // 头标记
     $body = substr($encoded, 1);
 
     $rules = $this->getRules();
-    if (!isset($rules[$marker])) return '';
+    if (!isset($rules[$marker])) return [];
 
     $positions = $rules[$marker];
     $sid = '';
@@ -116,6 +124,10 @@ class SessionIdObfuscatory
       }
     }
 
-    return $sid;
+    $rules = $this->getRules();
+    $length = floor(count($rules) / 3);
+    $type = floor($marker / $length);
+
+    return ['type' => $type, 'session_id' => $sid];
   }
 }

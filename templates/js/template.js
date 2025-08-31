@@ -1,5 +1,5 @@
 function format(d) {
-  const formatted = a.keywordEnumValueList.map(item => {
+  const formatted = d.keywordEnumValueList.map(item => {
     return `<br>${item.keywordCode}[${item.enumValueList.join("、")}]`;
   }).join("；");
   return '<div class="row"><div class="col-sm-6">' + d.content + '</div><div class="col-sm-6">' + d.example + formatted + '</div></div>';

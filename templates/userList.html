@@ -1,4 +1,4 @@
-<div id="mimiProgram-userList" class="card">
+<div id="miniProgram-userList" class="card">
   <div class="card-header">
     <h3 class="card-title">{{title}}</h3>
   </div>
@@ -51,8 +51,8 @@
 <!-- /.card -->
 <script type="text/javascript">
   loadScript('/plugins/miniprogram/js/userList.js', function () {
-    miniProgramUserDataTables = $('#mimiProgram-userList #userData').DataTable({
-      ajax: basePath + '/admin/mimiProgram/user',
+    miniProgramUserDataTables = $('#miniProgram-userList #userData').DataTable({
+      ajax: basePath + '/admin/miniProgram/user',
       rowId: 'id',
       columns: [
         {

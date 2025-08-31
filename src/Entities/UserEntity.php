@@ -1,6 +1,6 @@
 <?php
 
-namespace Wanphp\Plugins\MimiProgram\Entities;
+namespace Wanphp\Plugins\MiniProgram\Entities;
 
 use Wanphp\Libray\Mysql\EntityTrait;
 
@@ -57,6 +57,12 @@ class UserEntity implements \JsonSerializable
    * @var string
    */
   private string $status;
+  /**
+   * @DBType({"type":"char(10) NOT NULL DEFAULT '0'"})
+   * @OA\Property(description="最后登录时间")
+   * @var string
+   */
+  private string $lastLoginTime;
   /**
    * @DBType({"type":"char(10) NOT NULL DEFAULT '0'"})
    * @OA\Property(description="加入时间")

@@ -1,6 +1,6 @@
 <?php
 
-namespace Wanphp\Plugins\MimiProgram\Application\Manage;
+namespace Wanphp\Plugins\MiniProgram\Application\Manage;
 
 
 use Exception;
@@ -8,13 +8,13 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Wanphp\Libray\Slim\Action;
 use Wanphp\Libray\Slim\HttpTrait;
-use Wanphp\Plugins\MimiProgram\Domain\UserInterface;
+use Wanphp\Plugins\MiniProgram\Domain\UserInterface;
 
 /**
  * Class UserAction
  * @title 小程序用户管理
  * @route /admin/miniProgram/user
- * @package Wanphp\Plugins\MimiProgram\Application\Manage
+ * @package Wanphp\Plugins\MiniProgram\Application\Manage
  */
 class UserAction extends Action
 {

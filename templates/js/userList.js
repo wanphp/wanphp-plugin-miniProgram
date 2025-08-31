@@ -1,14 +1,14 @@
 let miniProgramUserDataTables;
 $(function () {
-  $('body').on('click', '#mimiProgram-userList #userData tbody button', function () {
+  $('body').on('click', '#miniProgram-userList #userData tbody button', function () {
     const row = miniProgramUserDataTables.row($(this).closest('tr'));
     const data = row.data();
-    $('#mimiProgram-userList #modal-editUser #userForm').attr('action', basePath + '/admin/miniProgram/user/' + data.id).attr('method', 'PUT');
-    $("#mimiProgram-userList #modal-editUser #userForm input[name='name']").val(data.name);
-    $("#mimiProgram-userList #modal-editUser #userForm input[name='tel']").val(data.tel);
-    $("#mimiProgram-userList #modal-editUser #userForm select[name='status']").val(data.status);
-    $('#mimiProgram-userList #modal-editUser').modal('show');
-  }).on('submit', '#mimiProgram-userList #modal-editUser #userForm', function (e) {
+    $('#miniProgram-userList #modal-editUser #userForm').attr('action', basePath + '/admin/miniProgram/user/' + data.id).attr('method', 'PUT');
+    $("#miniProgram-userList #modal-editUser #userForm input[name='name']").val(data.name);
+    $("#miniProgram-userList #modal-editUser #userForm input[name='tel']").val(data.tel);
+    $("#miniProgram-userList #modal-editUser #userForm select[name='status']").val(data.status);
+    $('#miniProgram-userList #modal-editUser').modal('show');
+  }).on('submit', '#miniProgram-userList #modal-editUser #userForm', function (e) {
     if (e.target.checkValidity()) {
       const fromData = new FormData(e.target);
       $.ajax({

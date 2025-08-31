@@ -1,13 +1,13 @@
 <?php
 
-namespace Wanphp\Plugins\MimiProgram\Application;
+namespace Wanphp\Plugins\MiniProgram\Application;
 
 
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Wanphp\Libray\Slim\Action;
-use Wanphp\Plugins\MimiProgram\Domain\UserInterface;
+use Wanphp\Plugins\MiniProgram\Domain\UserInterface;
 
 class UserApi extends Action
 {
@@ -30,15 +30,7 @@ class UserApi extends Action
       $uid = (int)$this->request->getAttribute('auth_user_id');
       if ($uid < 1) return $this->respondWithError('授权超时', 422);
       // 用户自己修改信息
-      $post = $this->getFormData();
-      $data = [];
-      if (isset($post['nickName'])) $data['nickName'] = $post['nickName'];
-      if (isset($post['avatarUrl'])) $data['avatarUrl'] = $post['avatarUrl'];
-      if (isset($post['name'])) $data['name'] = $post['name'];
-      if (isset($post['tel'])) $data['tel'] = $post['tel'];
-      if (empty($data)) return $this->respondWithError('无可更新的用户数据');
-      $num = $this->user->update($data, ['id' => $uid]);
-      return $this->respondWithData(['upNum' => $num], 201);
+      return $this->respondWithData($this->user->updateUser($uid, $this->getFormData()), 201);
     }
     return $this->respondWithError('禁止访问', 403);
   }

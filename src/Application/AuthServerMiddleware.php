@@ -1,6 +1,6 @@
 <?php
 
-namespace Wanphp\Plugins\MimiProgram\Application;
+namespace Wanphp\Plugins\MiniProgram\Application;
 
 
 use Exception;
